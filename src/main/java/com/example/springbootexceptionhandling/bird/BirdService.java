@@ -10,6 +10,10 @@ public class BirdService {
     @Autowired
     private BirdRepository birdRepository;
 
+    public Bird getBirdNoException(Long birdId) throws EntityNotFoundException {
+        return birdRepository.findOne(birdId);
+    }
+
     public Bird getBird(Long birdId) throws EntityNotFoundException {
         Bird bird = birdRepository.findOne(birdId);
         if(bird == null){
