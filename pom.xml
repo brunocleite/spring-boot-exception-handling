@@ -40,6 +40,11 @@
             <scope>test</scope>
         </dependency>
 
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
+        </dependency>
+
         <!--CODE-->
         <dependency>
             <groupId>org.projectlombok</groupId>
