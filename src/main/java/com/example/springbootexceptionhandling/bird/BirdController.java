@@ -18,10 +18,17 @@ public class BirdController {
         return birdService.getBird(birdId);
     }
 
+    @GetMapping(value = "/params")
+    public Bird getBirdRequestParam(@RequestParam("birdId") Long birdId) throws EntityNotFoundException {
+        return birdService.getBird(birdId);
+    }
+
     @GetMapping(value = "/noexception/{birdId}")
     public Bird getBirdNoException(@PathVariable("birdId") Long birdId) throws EntityNotFoundException {
         return birdService.getBirdNoException(birdId);
     }
+
+
 
     @PostMapping
     public Bird createBird(@RequestBody @Valid Bird bird){
