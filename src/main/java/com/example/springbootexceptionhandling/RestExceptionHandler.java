@@ -19,6 +19,7 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import javax.servlet.http.HttpServletRequest;
@@ -152,6 +153,23 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleHttpMessageNotWritable(HttpMessageNotWritableException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         String error = "Error writing JSON output";
         return buildResponseEntity(new ApiError(HttpStatus.INTERNAL_SERVER_ERROR, error, ex));
+    }
+
+    /**
+     * Handle NoHandlerFoundException.
+     * @param ex
+     * @param headers
+     * @param status
+     * @param request
+     * @return
+     */
+    @Override
+    protected ResponseEntity<Object> handleNoHandlerFoundException(
+            NoHandlerFoundException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        ApiError apiError = new ApiError(BAD_REQUEST);
+        apiError.setMessage(String.format("Could not find the %s method for URL %s", ex.getHttpMethod(), ex.getRequestURL()));
+        apiError.setDebugMessage(ex.getMessage());
+        return buildResponseEntity(apiError);
     }
 
     /**
