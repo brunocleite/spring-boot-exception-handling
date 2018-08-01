@@ -2,7 +2,7 @@ package com.example.springbootexceptionhandling.bird;
 
 public abstract class BirdObjectMother {
 
-    public static Bird createCanary(){
+    public static Bird createCanary() {
         return Bird.builder()
                 .scientificName("Atlantic canary")
                 .specie("serinus canaria")

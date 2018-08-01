@@ -29,9 +29,8 @@ public class BirdController {
     }
 
 
-
     @PostMapping
-    public Bird createBird(@RequestBody @Valid Bird bird){
+    public Bird createBird(@RequestBody @Valid Bird bird) {
         return birdService.createBird(bird);
     }
 

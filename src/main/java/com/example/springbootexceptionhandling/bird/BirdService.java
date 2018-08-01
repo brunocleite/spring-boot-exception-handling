@@ -16,7 +16,7 @@ public class BirdService {
 
     public Bird getBird(Long birdId) throws EntityNotFoundException {
         Bird bird = birdRepository.findOne(birdId);
-        if(bird == null){
+        if (bird == null) {
             throw new EntityNotFoundException(Bird.class, "id", birdId.toString());
         }
         return bird;
