@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("/birds")
@@ -16,6 +17,11 @@ public class BirdController {
     @GetMapping(value = "/{birdId}")
     public Bird getBird(@PathVariable("birdId") Long birdId) throws EntityNotFoundException {
         return birdService.getBird(birdId);
+    }
+
+    @GetMapping(value = "/collection")
+    public List<Bird> getBirdValid(@RequestBody BirdCollection birdCollection) throws EntityNotFoundException {
+        return birdService.getBirdCollection(birdCollection);
     }
 
     @GetMapping(value = "/params")
