@@ -1,5 +1,6 @@
 package com.example.springbootexceptionhandling;
 
+import com.example.springbootexceptionhandling.apierror.ApiError;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.core.Ordered;

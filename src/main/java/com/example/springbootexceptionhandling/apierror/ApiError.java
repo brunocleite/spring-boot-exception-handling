@@ -1,12 +1,10 @@
-package com.example.springbootexceptionhandling;
+package com.example.springbootexceptionhandling.apierror;
 
+import com.example.springbootexceptionhandling.LowerCaseClassNameResolver;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.annotation.JsonTypeIdResolver;
-import com.fasterxml.jackson.databind.jsontype.impl.TypeIdResolverBase;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import org.hibernate.validator.internal.engine.path.PathImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
@@ -21,6 +19,7 @@ import java.util.Set;
 @Data
 @JsonTypeInfo(include = JsonTypeInfo.As.WRAPPER_OBJECT, use = JsonTypeInfo.Id.CUSTOM, property = "error", visible = true)
 @JsonTypeIdResolver(LowerCaseClassNameResolver.class)
+public
 class ApiError {
 
     private HttpStatus status;
@@ -34,19 +33,19 @@ class ApiError {
         timestamp = LocalDateTime.now();
     }
 
-    ApiError(HttpStatus status) {
+    public ApiError(HttpStatus status) {
         this();
         this.status = status;
     }
 
-    ApiError(HttpStatus status, Throwable ex) {
+    public ApiError(HttpStatus status, Throwable ex) {
         this();
         this.status = status;
         this.message = "Unexpected error";
         this.debugMessage = ex.getLocalizedMessage();
     }
 
-    ApiError(HttpStatus status, String message, Throwable ex) {
+    public ApiError(HttpStatus status, String message, Throwable ex) {
         this();
         this.status = status;
         this.message = message;
@@ -76,7 +75,7 @@ class ApiError {
                 fieldError.getDefaultMessage());
     }
 
-    void addValidationErrors(List<FieldError> fieldErrors) {
+    public void addValidationErrors(List<FieldError> fieldErrors) {
         fieldErrors.forEach(this::addValidationError);
     }
 
@@ -86,7 +85,7 @@ class ApiError {
                 objectError.getDefaultMessage());
     }
 
-    void addValidationError(List<ObjectError> globalErrors) {
+    public void addValidationError(List<ObjectError> globalErrors) {
         globalErrors.forEach(this::addValidationError);
     }
 
@@ -103,45 +102,10 @@ class ApiError {
                 cv.getMessage());
     }
 
-    void addValidationErrors(Set<ConstraintViolation<?>> constraintViolations) {
+    public void addValidationErrors(Set<ConstraintViolation<?>> constraintViolations) {
         constraintViolations.forEach(this::addValidationError);
     }
 
 
-    abstract class ApiSubError {
-
-    }
-
-    @Data
-    @EqualsAndHashCode(callSuper = false)
-    @AllArgsConstructor
-    class ApiValidationError extends ApiSubError {
-        private String object;
-        private String field;
-        private Object rejectedValue;
-        private String message;
-
-        ApiValidationError(String object, String message) {
-            this.object = object;
-            this.message = message;
-        }
-    }
 }
 
-class LowerCaseClassNameResolver extends TypeIdResolverBase {
-
-    @Override
-    public String idFromValue(Object value) {
-        return value.getClass().getSimpleName().toLowerCase();
-    }
-
-    @Override
-    public String idFromValueAndType(Object value, Class<?> suggestedType) {
-        return idFromValue(value);
-    }
-
-    @Override
-    public JsonTypeInfo.Id getMechanism() {
-        return JsonTypeInfo.Id.CUSTOM;
-    }
-}
