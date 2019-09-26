@@ -13,11 +13,11 @@ public class BirdService {
     @Autowired
     private BirdRepository birdRepository;
 
-    public Bird getBirdNoException(Long birdId) throws EntityNotFoundException {
+    public Bird getBirdNoException(Long birdId) {
         return birdRepository.findOne(birdId);
     }
 
-    public Bird getBird(Long birdId) throws EntityNotFoundException {
+    public Bird getBird(Long birdId) {
         Bird bird = birdRepository.findOne(birdId);
         if (bird == null) {
             throw new EntityNotFoundException(Bird.class, "id", birdId.toString());
@@ -29,7 +29,7 @@ public class BirdService {
         return birdRepository.save(bird);
     }
 
-    public List<Bird> getBirdCollection(BirdCollection birdCollection) throws EntityNotFoundException {
+    public List<Bird> getBirdCollection(BirdCollection birdCollection) {
         List<Bird> birds = new ArrayList<>();
 
         for (Long birdId : birdCollection.getBirdsIds()) {
